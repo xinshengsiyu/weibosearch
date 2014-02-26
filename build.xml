@@ -1,0 +1,82 @@
+<project name="Jsch" default="dist" basedir=".">
+    <description>
+            build task jar
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="lib" location="libs"/>
+  <property name="build.class" location="build/classes"/>
+  <property name="dist"  location="dist"/>
+  <property name="sdkName"  value="cp-smartbox-v1.0.jar"/>
+  <property name="mainClass"  value="com.augmentum.weibo.client.WeiboClient"/>
+    <!-- set sose_domain and taskSdkRunPath-->
+  <property name="javac.debug" value="true"/>
+
+    <path id="classpath">
+          <fileset  dir="${lib}"/>
+     </path>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <delete dir="${build.class}"></delete>
+    <delete dir="${dist}"></delete>
+    <mkdir dir="${build.class}"/>
+    <mkdir dir="${dist}"/>
+  </target>
+
+  <target name="copyfiles" depends="init">
+          <!--copy lib to dist -->
+        <copy todir="${dist}/lib">
+            <fileset dir="${lib}"/>
+        </copy>
+    </target>
+
+  <target name="compile" depends="copyfiles"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build.class}">
+                  <include name="**/*.java" />
+                  <classpath>
+                      <fileset dir="${lib}">
+                          <include name="*.jar">
+                          </include>
+                      </fileset>
+                  </classpath>
+              </javac>
+  </target>
+
+    <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>
+	<copy todir="${dist}">
+        <fileset dir="${src}">
+        	<include name="*.properties"></include>
+    	</fileset>
+    </copy>
+
+    <pathconvert property="mf.classpath" pathsep=" ">
+        <path refid="classpath"></path>
+        <!-- cannot use relative path in ubuntu-->
+        <mapper>
+             <chainedmapper>
+                 <flattenmapper />
+                 <!-- cannot use  ".\lib\" *-->
+                 <globmapper from="*" to="./lib/*" />
+             </chainedmapper>
+         </mapper>
+   </pathconvert>
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/${sdkName}" basedir="${build.class}" >
+        <manifest>
+                <!--define main-class-->
+                <attribute name="Main-Class" value="${mainClass}" />
+                <!--define Class-Path-->
+                <attribute name="Class-Path" value=". ${mf.classpath}">
+                </attribute>
+            </manifest>
+    </jar>
+  </target>
+</project>
