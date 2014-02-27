@@ -8,6 +8,10 @@ Like a spider,grab the messages from sina site by keywords, once no more than 20
 * Clone the project and config the cpsmartbox.properties. By the way, in MySQL DataBase the cloumn name of keyword must be `name`, you can config the table name in the config file.
 * About Cookie, first logined the Sina site and search a keyword, must be logined status, then use chrome get the cookie
 * SinaAppKey: create a application on http://open.weibo.com/, then you can get the appKey, not online is Ok.
+* Config MySQL and MongoDB, then use ant to build the project. cd to dist folder, use this command in cli.
+```bash
+ java -jar search.jar
+```
 
 ##Issues
 Any issues you can contact with me.
