@@ -63,7 +63,7 @@ public class WeiboClient {
 		return list;
 	}
 
-	public List<String> pareHtml2Ids(DBObject weibo) {
+	public List<String> parseHtml2Ids(DBObject weibo) {
 		System.out.println("====解析页面,获取消息Id=====");
 		String pageHtml = weibo.get("html").toString();
 		Document doc = Jsoup.parse(pageHtml);
@@ -90,8 +90,13 @@ public class WeiboClient {
 				return true;
 			}
 			String json = RequestUtil.getWeiboFromAPi(weiboId);
+			DBObject dbo = (DBObject) JSON.parse(json);
+			Object error = dbo.get("error");
+			if(null != error){
+				throw new WeiboException("啊！Cookie失效啦!");
+			}
 			System.out.println("===========调用新浪API获取消息详情完毕================");
-			return MongoCommonDao.getInstance().save("SocialMessage", json);
+			return MongoCommonDao.getInstance().save("SocialMessage", dbo);
 		} catch (MongoDBException e) {
 			logger.error(e.getMessage());
 			throw new WeiboException(e);
@@ -103,7 +108,7 @@ public class WeiboClient {
 		List<String> ids = new ArrayList<String>();
 
 		for (DBObject dbObject : list) {
-			ids.addAll(this.pareHtml2Ids(dbObject));
+			ids.addAll(this.parseHtml2Ids(dbObject));
 		}
 		
 		if(ids.size() == 0){

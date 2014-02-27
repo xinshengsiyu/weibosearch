@@ -5,6 +5,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
+import com.mongodb.WriteResult;
 import com.mongodb.util.JSON;
 
 public class MongoCommonDao {
@@ -25,9 +26,15 @@ public class MongoCommonDao {
     public boolean save(String collectionName, String json) throws MongoDBException{
       DBCollection collection = MongoDBUtil.getDBCollection(collectionName);
       DBObject dbo = (DBObject) JSON.parse(json);
-      collection.insert(dbo);
-      return true;
+      WriteResult wr = collection.insert(dbo);
+      return wr.getError() == "null";
     }
+    
+    public boolean save(String collectionName, DBObject dbo) throws MongoDBException{
+        DBCollection collection = MongoDBUtil.getDBCollection(collectionName);
+        WriteResult wr = collection.insert(dbo);
+        return wr.getError() == "null";
+      }
     
     public DBObject findByAttribute(String collectionName, String columnName, String columnValue) throws MongoDBException{
     	DBCollection collection = MongoDBUtil.getDBCollection(collectionName);
