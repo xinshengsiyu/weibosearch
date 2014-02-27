@@ -70,9 +70,10 @@ public class RequestUtil {
 	public static Document getSearchResultPage(String uri,
 			Map<String, String> params) {
 		String url = generateUri(uri, params);
+		
 		Document doc;
 		try {
-			doc = Jsoup.connect(url).get();
+			doc = Jsoup.connect(url).header(Constant.USER_AGENT, FileUtil.getProperty(Constant.USER_AGENT)).header(Constant.COOKIE, FileUtil.getProperty(Constant.COOKIE)).get();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			throw new WeiboException(e);

@@ -105,21 +105,25 @@ public class WeiboClient {
 		for (DBObject dbObject : list) {
 			ids.addAll(this.pareHtml2Ids(dbObject));
 		}
+		
+		if(ids.size() == 0){
+			logger.error("页面获取异常，请检查是否被封锁");
+		}
 
 		for (String id : ids) {
 			this.createWeibo(id);
 		}
 	}
 
-	public static void main(String[] args) {
-		System.out.println("==========start========");
+	public static void main(String[] args) throws InterruptedException {
 		TagClient client = new TagClient();
 		WeiboClient weibo = new WeiboClient();
 		List<String> keyWords = client.keyWords();
+		int sleepTime = Integer.parseInt(FileUtil.getProperty(Constant.SLEEP_TIME));
 		for (String keyWord : keyWords) {
 			weibo.searchByKeyWord(keyWord);
+			Thread.sleep(sleepTime);
 		}
-		System.out.println("=========end==========");
 	}
 
 }

@@ -23,6 +23,10 @@ public class FileUtil {
     public static String getProperty(String key) {
         return properties.getProperty(key);
     }
+    
+    public static String getProperty(String key, String defaultValue) {
+        return properties.getProperty(key, defaultValue);
+    }
 
     public static String getProperty(String key, Object... other) {
         String url = properties.getProperty(key);

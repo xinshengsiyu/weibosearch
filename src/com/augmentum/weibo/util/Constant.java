@@ -22,5 +22,7 @@ public class Constant {
 	public static final String MYSQL_HOST = "MySQLDBHost";
 	public static final String MYSQL_PORT = "MySQLDBPort";
 	public static final String TAG_TABLE_NAME = "TagTableName";
+	public static final String USER_AGENT = "User-Agent";
+	public static final String SLEEP_TIME = "SleepTime";
 	
 }
