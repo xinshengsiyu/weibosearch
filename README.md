@@ -1,4 +1,4 @@
-Weibo search just for Sina
+Weibo search for Sina
 ===========
 ##what can weibosearch do?
 Like a spider,grab the messages from sina site by keywords, once no more than 20 messages each keyword will be returned. Stored in mongoDB.
