@@ -1,6 +1,6 @@
 <project name="Jsch" default="dist" basedir=".">
     <description>
-            build task jar
+            build task jars
     </description>
   <!-- set global properties for this build -->
   <property name="src" location="src"/>
